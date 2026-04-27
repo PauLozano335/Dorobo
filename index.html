@@ -1,0 +1,531 @@
+HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dorobo | Creative Content & Design Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        /* ESTÉTICA: "ULTRA-MODERN CREATIVE"
+           PALETA: Deep Black, Crisp White, Electric Violet
+        */
+        :root {
+            --bg: #050505;
+            --surface: #0f0f10;
+            --primary: #7c3aed; /* Electric Violet */
+            --accent: #a78bfa;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --transition-soft: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor implementation */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* CUSTOM CURSOR */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        /* UTILS */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 40px; }
+        .section { padding: 140px 0; }
+        .grad-text {
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* REVEAL ANIMATION */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: var(--transition-soft);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 30px 0;
+            transition: var(--transition-soft);
+        }
+        nav.scrolled {
+            padding: 15px 0;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -1px;
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition-soft);
+        }
+        .nav-links a:hover { color: #fff; }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -4px;
+            margin-bottom: 30px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 18px 35px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+        .btn-primary {
+            background: #fff;
+            color: #000;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05) rotate(-1deg);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* SERVICES GRID */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .service-card {
+            background: var(--surface);
+            padding: 60px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: var(--transition-soft);
+        }
+        .service-card:hover {
+            border-color: var(--primary);
+            background: linear-gradient(145deg, #0f0f10, #161618);
+            transform: translateY(-10px);
+        }
+        .service-card h3 {
+            font-size: 2.5rem;
+            margin: 20px 0;
+            letter-spacing: -1px;
+        }
+        .service-tag {
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        /* WORKFLOW */
+        .workflow-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+        .step-card {
+            position: relative;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .step-num {
+            font-size: 12px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* PORTFOLIO MASONRY-LIKE */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+        .port-item {
+            grid-column: span 6;
+            height: 500px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        .port-item.tall { grid-column: span 4; height: 600px; }
+        .port-item.wide { grid-column: span 8; height: 600px; }
+        
+        .port-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: var(--transition-soft);
+        }
+        .port-item:hover .port-img {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+        .port-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-soft);
+        }
+        .port-item:hover .port-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* CONTACT FORM */
+        .contact-box {
+            background: var(--surface);
+            padding: 80px;
+            border-radius: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        input, textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 0;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition-soft);
+        }
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+        label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .services-grid, .workflow-row, .contact-box { grid-template-columns: 1fr; }
+            .port-item, .port-item.tall, .port-item.wide { grid-column: span 12; height: 400px; }
+            .hero h1 { font-size: 4rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <nav id="navbar">
+        <div class="container nav-flex">
+            <a href="#" class="logo">DOROBO<span style="color: var(--primary);">.</span></a>
+            <div class="nav-links">
+                <a href="#servicios">Servicios</a>
+                <a href="#proceso">Proceso</a>
+                <a href="#portfolio">Proyectos</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+            <a href="#contacto" class="btn" style="padding: 10px 25px; border: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: #fff;">Let's talk</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg-shapes">
+            <div class="blob"></div>
+        </div>
+        <div class="container">
+            <div class="reveal">
+                <span class="service-tag">Agencia Boutique</span>
+                <h1>Elevamos marcas <br><span class="grad-text">al siguiente nivel.</span></h1>
+                <p>Fusionamos contenido estratégico y diseño de vanguardia para marcas que no se conforman con lo ordinario.</p>
+                <div style="display: flex; gap: 20px;">
+                    <a href="#contacto" class="btn btn-primary">Agendar una llamada</a>
+                    <a href="#portfolio" class="btn" style="color: #fff; border: 1px solid rgba(255,255,255,0.1);">Ver trabajos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="section">
+        <div class="container">
+            <h2 class="reveal" style="font-size: 3.5rem; margin-bottom: 60px; letter-spacing: -2px;">Nuestros <span class="grad-text">Ejes.</span></h2>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <span class="service-tag">Social Strategy</span>
+                    <h3>Contenido <br>Mensual.</h3>
+                    <p style="color: var(--text-dim);">Reels, fotografía y copywriting. Nos encargamos de que tu marca esté viva y activa todos los días del mes.</p>
+                </div>
+                <div class="service-card reveal">
+                    <span class="service-tag">Visual Identity</span>
+                    <h3>Diseño <br>Estratégico.</h3>
+                    <p style="color: var(--text-dim);">Identidades que impactan. Desde el logo hasta la web, construimos un universo visual coherente y moderno.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proceso" class="section">
+        <div class="container">
+            <h2 class="reveal" style="font-size: 3.5rem; margin-bottom: 20px; letter-spacing: -2px;">Workflow.</h2>
+            <div class="workflow-row">
+                <div class="step-card reveal">
+                    <span class="step-num">01</span>
+                    <h3>Briefing</h3>
+                    <p style="color: var(--text-dim); margin-top: 10px;">Entendemos tu ADN y objetivos reales.</p>
+                </div>
+                <div class="step-card reveal">
+                    <span class="step-num">02</span>
+                    <h3>Concept</h3>
+                    <p style="color: var(--text-dim); margin-top: 10px;">Ideamos rutas creativas disruptivas.</p>
+                </div>
+                <div class="step-card reveal">
+                    <span class="step-num">03</span>
+                    <h3>Craft</h3>
+                    <p style="color: var(--text-dim); margin-top: 10px;">Ejecución con estándares de excelencia.</p>
+                </div>
+                <div class="step-card reveal">
+                    <span class="step-num">04</span>
+                    <h3>Launch</h3>
+                    <p style="color: var(--text-dim); margin-top: 10px;">Publicación y escalado de resultados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="reveal" style="font-size: 3.5rem; margin-bottom: 60px; letter-spacing: -2px;">Selección de <span class="grad-text">Obras.</span></h2>
+            <div class="portfolio-grid">
+                <div class="port-item wide reveal">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" class="port-img" alt="Work">
+                    <div class="port-overlay">
+                        <h3>Aether Beauty</h3>
+                        <p>Branding & Social Content</p>
+                    </div>
+                </div>
+                <div class="port-item tall reveal">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80" class="port-img" alt="Work">
+                    <div class="port-overlay">
+                        <h3>Nova Tech</h3>
+                        <p>UI/UX Design</p>
+                    </div>
+                </div>
+                <div class="port-item tall reveal">
+                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800&q=80" class="port-img" alt="Work">
+                    <div class="port-overlay">
+                        <h3>Studio M</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+                <div class="port-item wide reveal">
+                    <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=1200&q=80" class="port-img" alt="Work">
+                    <div class="port-overlay">
+                        <h3>Krypton</h3>
+                        <p>Campaign Strategy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section">
+        <div class="container">
+            <div class="contact-box reveal">
+                <div>
+                    <h2 style="font-size: 3rem; margin-bottom: 20px;">¿Hacemos algo <span class="grad-text">épico?</span></h2>
+                    <p style="color: var(--text-dim);">Estamos listos para transformar tu presencia digital. Escríbenos y agendemos una sesión de descubrimiento.</p>
+                </div>
+                <form id="doroboForm">
+                    <div class="input-group">
+                        <label>Nombre</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Tu Visión</label>
+                        <textarea id="message" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Propuesta</button>
+                    <p id="msgResponse" style="margin-top: 20px; font-size: 14px; display: none;"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-dim); font-size: 14px;">&copy; 2026 DOROBO STUDIO. Crafted for the bold.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .port-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(4)';
+                cursor.style.opacity = '0.3';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.opacity = '1';
+            });
+        });
+
+        // Scroll Reveal Logic
+        const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = { threshold: 0.15 };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        reveals.forEach(rev => revealObserver.observe(rev));
+
+        // Navbar Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 100) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        // Form Submission
+        document.getElementById('doroboForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const resp = document.getElementById('msgResponse');
+            resp.style.display = 'block';
+            resp.style.color = '#7c3aed';
+            resp.innerText = "Procesando tu visión...";
+            
+            setTimeout(() => {
+                resp.innerText = "¡Mensaje recibido! Nos vemos en la cima.";
+                this.reset();
+            }, 2000);
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
